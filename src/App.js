@@ -1,24 +1,93 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import React, {useEffect, useRef, useState } from 'react';
+import Viewer from './Viewer';
+import Captured from './Captured';
+
 
 function App() {
+  const videoRef = useRef(null)
+  const photoRef = useRef(null)
+  const [counter, setCount] = useState(0);
+  const [viewer, setViewer] = useState(false);
+  const [captured, setCaptured] = useState(false);
+  const [numCaptures] = useState(3);
+
+
+  const getVideo = () => {
+    navigator.mediaDevices.getUserMedia({video: true})
+                           .then(stream => {
+                              let video = videoRef.current;
+                              video.setAttribute('autoplay', ''); // required to tell iOS safari we don't want fullscreen
+
+                              video.setAttribute('muted', ''); // required to tell iOS safari we don't want fullscreen
+
+                              video.setAttribute('playsinline', ''); // required to tell iOS safari we don't want fullscreen
+                              video.srcObject = stream
+                              video.play();
+                           }).catch(err =>{
+                            console.error(err) 
+                           })
+  }
+
+  const takePhoto = () =>{
+
+    let videoCanvas = videoRef.current;
+    
+    photoRef.current.width=640; 
+    photoRef.current.height=480;
+    
+    let ctx = photoRef.current.getContext('2d');
+    ctx.drawImage(videoCanvas, 0, 0, photoRef.current.width , photoRef.current.height);
+
+    photoRef.current.toBlob( (blob) => {
+
+    navigator?.serviceWorker?.controller?.postMessage({
+        blob: blob,
+        type: "POST_DATA"
+      });
+    },"image/jpeg" )
+  }
+
+  useEffect(() => {
+    getVideo();
+  },[])
+
+  const setIntervals = ()=>{
+
+     var count = 0
+
+     while(count < numCaptures)
+     {
+         takePhoto();
+         count = count + 1
+
+         setCount(count)
+
+     }
+
+     setCaptured(true)
+
+  //    navigator?.serviceWorker?.controller?.postMessage({
+  //     id: Date.now(),
+  //     blob: blob,
+  //     flag: "post"
+  //   });
+  // },"image/jpeg" )
+  
+  
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      { viewer? <Viewer></Viewer> : captured ? <Captured setView={()=> setViewer(true) } >{counter}</Captured> :
+       <div className='camera' >
+          <video ref={videoRef}></video>
+          <canvas style={{display: "none" }} ref={photoRef} id="photores"></canvas>
+          <div className='Buttnss'>
+            <button onClick={setIntervals} disabled={counter===60} style={{display: counter===numCaptures && "none",width:"100%"}} >Capture Images</button>
+          </div>
+       </div>
+      }
     </div>
   );
 }
