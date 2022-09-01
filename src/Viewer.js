@@ -6,28 +6,38 @@ import {getAllFromDB} from './store'
 function Viewer() {
 
   const [flag, setFlag] = useState(0);
+  const [cursur, setCursor] = useState(0);
   const [imageUrls, setImageUrls] = useState([]);
+  const [image1, setimage1] = useState("");
+  const [image2, setimage2] = useState("");
+  const [image0, setimage0] = useState("");
  
-
-  useEffect(()=>{
-
-    async function fetchData() {
-      const res  = await getAllFromDB()
-    
-      for(let i = 0; i < res.length ; i++){
-          const url = await blobToBase64(res[i].blob)
-
-          const newTodos = [...imageUrls];
-          newTodos.push(url);
-          setImageUrls(newTodos);
-        }
   
-        setFlag(1)
+  async function fetchData() {
+    const res  = await getAllFromDB()
+
+    let newTodos =[];
+  
+    for(let i = 0; i < res.length ; i++){
+        const url = await blobToBase64(res[i].blob)
+
+        newTodos.push({id:res[i].id, url: url});
+        setImageUrls(newTodos);
+      }
+    return newTodos
+
     }
+    
+    useEffect(()=>{
+      fetchData().then(res=>{
+          setimage0(res[0])
+          setimage1(res[1])
+          setimage2(res[2])
+          setCursor(2)
+          setFlag(1)
+      })
 
-    fetchData();
-
-  })
+  },[])
 
 function blobToBase64(blob) {
     return new Promise((resolve, _) => {
@@ -37,17 +47,54 @@ function blobToBase64(blob) {
     });
   }
 
-
+  const nextView = ()=>{
+    if(cursur < imageUrls.length-1)
+    {
+      setimage0(imageUrls[cursur+1])
+      setimage1(imageUrls[cursur+2])
+      setimage2(imageUrls[cursur+3])
+      setCursor(cursur + 3)
+      setFlag(flag + 1)
+    }
+  }
 
   return (
     <>
-    {flag===0? 
+    {cursur===0? 
         <div>Loading...</div>: 
-        <div className='Viewer'>
-          <img src={imageUrls[0]} alt="alt" ></img>
-          <img src={imageUrls[1]} alt="alt" ></img>
-          <img src={imageUrls[2]} alt="alt" ></img>
+        <>
+         <div className='row'>
+            <div className='col-md-4 col-xs-12'>
+              <div className="card">
+                <img src={image0.url} className="card-img-top" alt="..."></img>
+                <div className="card-body">
+                  <p className="card-text"> Image Id {image0.id}</p>
+                </div>
+              </div>
+            </div>
+            <div className='col-md-4 col-xs-12'>
+                <div className="card">
+                    <img src={image1.url} className="card-img-top" alt="..."></img>
+                    <div className="card-body">
+                      <p className="card-text">Image Id {image1.id}</p>
+                    </div>
+                </div>
+            </div>
+            <div className='col-md-4 col-xs-12'>
+                <div className="card">
+                  <img src={image2.url} className="card-img-top" alt="..."></img>
+                  <div className="card-body">
+                    <p className="card-text">Image Id {image2.id}</p>
+                  </div>
+              </div>
+            </div>
         </div>
+
+        { cursur===imageUrls.length-1 ?  <h3>You reached end of View</h3>:
+        <button className='btn btn-primary mt-3' onClick={nextView} >Next View</button>
+        }
+      <h2> Batch {flag}</h2>
+      </>
     }
     </>
   );

@@ -2,6 +2,7 @@ import './App.css';
 import React, {useEffect, useRef, useState } from 'react';
 import Viewer from './Viewer';
 import Captured from './Captured';
+// import {postToDB} from './store'
 
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
   const [counter, setCount] = useState(0);
   const [viewer, setViewer] = useState(false);
   const [captured, setCaptured] = useState(false);
-  const [numCaptures] = useState(3);
+  const [numCaptures] = useState(9);
 
 
   const getVideo = () => {
@@ -45,7 +46,9 @@ function App() {
         blob: blob,
         type: "POST_DATA"
       });
+    // postToDB({blob:blob})
     },"image/jpeg" )
+
   }
 
   useEffect(() => {
@@ -58,21 +61,13 @@ function App() {
 
      while(count < numCaptures)
      {
+       
          takePhoto();
-         count = count + 1
-
-         setCount(count)
-
+         setCount(count)        
+        count = count + 1
      }
 
      setCaptured(true)
-
-  //    navigator?.serviceWorker?.controller?.postMessage({
-  //     id: Date.now(),
-  //     blob: blob,
-  //     flag: "post"
-  //   });
-  // },"image/jpeg" )
   
   
   }
@@ -84,7 +79,7 @@ function App() {
           <video ref={videoRef}></video>
           <canvas style={{display: "none" }} ref={photoRef} id="photores"></canvas>
           <div className='Buttnss'>
-            <button onClick={setIntervals} disabled={counter===60} style={{display: counter===numCaptures && "none",width:"100%"}} >Capture Images</button>
+            <button className='btn btn-primary text-center'  onClick={setIntervals} disabled={counter===60} >Capture Images</button>
           </div>
        </div>
       }

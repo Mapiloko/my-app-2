@@ -9,8 +9,8 @@ function Captured({setView, children}) {
 
   return (
     <div className='Viewer'>
-       <h1>{children} Images Captured</h1>
-       <button onClick={setView} style={{width:"70%"}} >Go to Viewer</button>
+       <h1>{children + 1} Images Captured</h1>
+       <button className='btn btn-primary' onClick={setView} style={{width:"70%"}} >Go to Viewer</button>
     </div>
   );
 }
