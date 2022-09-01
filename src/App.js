@@ -11,7 +11,7 @@ function App() {
   const [counter, setCount] = useState(0);
   const [viewer, setViewer] = useState(false);
   const [captured, setCaptured] = useState(false);
-  const [numCaptures] = useState(9);
+  const [numCaptures] = useState(60);
 
 
   const getVideo = () => {
