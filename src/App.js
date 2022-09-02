@@ -2,7 +2,7 @@ import './App.css';
 import React, {useEffect, useRef, useState } from 'react';
 import Viewer from './Viewer';
 import Captured from './Captured';
-// import {postToDB} from './store'
+// import {idbRequest} from './store'
 
 
 function App() {
@@ -46,7 +46,7 @@ function App() {
         blob: blob,
         type: "POST_DATA"
       });
-    // postToDB({blob:blob})
+      // idbRequest.add_data({blob:blob})
     },"image/jpeg" )
 
   }

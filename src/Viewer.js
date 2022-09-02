@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import {getAllFromDB, delete_db} from './store'
+import {idbRequest} from './store'
 
 
 function Viewer() {
@@ -14,7 +14,7 @@ function Viewer() {
  
   
   async function fetchData() {
-    const res  = await getAllFromDB()
+    const res  = await idbRequest.get_all()
 
     let newTodos =[];
   
@@ -35,7 +35,7 @@ function Viewer() {
           setimage2(res[2])
           setCursor(2)
           setFlag(1)
-          delete_db()
+          idbRequest.clear_store()
       })
 
   },[])

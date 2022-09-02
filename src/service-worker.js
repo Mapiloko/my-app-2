@@ -12,7 +12,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
-import {postToDB} from './store'
+import {idbRequest} from './store'
 
 clientsClaim();
 
@@ -74,7 +74,7 @@ self.addEventListener('message', (event) => {
   if (event.data && event.data.type === "POST_DATA")
   {
     console.log("In Post")
-    postToDB(event.data)
+    idbRequest.add_data(event.data)
   }
 });
 
