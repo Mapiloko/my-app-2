@@ -24,6 +24,17 @@ export const postToDB = (data)=>{
 
 }
 
+export function delete_db() {
+
+  const transaction = makeTX('imageStore', 'readwrite');
+
+  const objectStore = transaction.objectStore("imageStore");
+  const objectStoreRequest = objectStore.clear();
+  objectStoreRequest.onsuccess = (event) => {
+    console.log('<li>DataBase Deleted successful.</li>');
+  };
+}
+
 export async function getAllFromDB() {
     let request;
     await withStore('readonly', (store) => {

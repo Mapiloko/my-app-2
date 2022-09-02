@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import {getAllFromDB} from './store'
+import {getAllFromDB, delete_db} from './store'
 
 
 function Viewer() {
@@ -21,7 +21,7 @@ function Viewer() {
     for(let i = 0; i < res.length ; i++){
         const url = await blobToBase64(res[i].blob)
 
-        newTodos.push({id:res[i].id, url: url});
+        newTodos.push({id:i+1, url: url});
         setImageUrls(newTodos);
       }
     return newTodos
@@ -35,6 +35,7 @@ function Viewer() {
           setimage2(res[2])
           setCursor(2)
           setFlag(1)
+          delete_db()
       })
 
   },[])
