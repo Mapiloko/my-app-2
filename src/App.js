@@ -2,6 +2,7 @@ import './App.css';
 import React, {useEffect, useRef, useState } from 'react';
 import Viewer from './Viewer';
 import Captured from './Captured';
+import Barcode from './Barcode';
 // import {idbRequest} from './store'
 
 
@@ -51,9 +52,9 @@ function App() {
 
   }
 
-  useEffect(() => {
-    getVideo();
-  },[])
+  // useEffect(() => {
+  //   getVideo();
+  // },[])
 
   const setIntervals = ()=>{
 
@@ -74,7 +75,8 @@ function App() {
 
   return (
     <div>
-      { viewer? <Viewer></Viewer> : captured ? <Captured setView={()=> setViewer(true) } >{counter}</Captured> :
+      <Barcode></Barcode>
+      {/* { viewer? <Viewer></Viewer> : captured ? <Captured setView={()=> setViewer(true) } >{counter}</Captured> :
        <div className='camera' >
           <video ref={videoRef}></video>
           <canvas style={{display: "none" }} ref={photoRef} id="photores"></canvas>
@@ -82,7 +84,7 @@ function App() {
             <button className='btn btn-primary text-center'  onClick={setIntervals} disabled={counter===60} >Capture Images</button>
           </div>
        </div>
-      }
+      } */}
     </div>
   );
 }
