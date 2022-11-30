@@ -1,16 +1,13 @@
 import './App.css';
 import React, {useEffect, useRef, useState } from 'react';
-import Viewer from './Viewer';
-import Captured from './Captured';
-import Barcode from './Barcode';
-// import {idbRequest} from './store'
-
+import Profile from './Profile';
+import Login from './Login';
+import ChangeColor from './ChangeColor';
 
 function App() {
   const videoRef = useRef(null)
   const photoRef = useRef(null)
   const [counter, setCount] = useState(0);
-  const [viewer, setViewer] = useState(false);
   const [captured, setCaptured] = useState(false);
   const [numCaptures] = useState(60);
 
@@ -74,19 +71,11 @@ function App() {
   }
 
   return (
-    <div>
-      <Barcode></Barcode>
-      <p>Test</p>
-      {/* { viewer? <Viewer></Viewer> : captured ? <Captured setView={()=> setViewer(true) } >{counter}</Captured> :
-       <div className='camera' >
-          <video ref={videoRef}></video>
-          <canvas style={{display: "none" }} ref={photoRef} id="photores"></canvas>
-          <div className='Buttnss'>
-            <button className='btn btn-primary text-center'  onClick={setIntervals} disabled={counter===60} >Capture Images</button>
-          </div>
-       </div>
-      } */}
-    </div>
+      <div className='container'>
+        <Profile></Profile>
+        <Login></Login>
+        <ChangeColor></ChangeColor>
+      </div>
   );
 }
 
