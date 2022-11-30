@@ -76,6 +76,7 @@ function App() {
   return (
     <div>
       <Barcode></Barcode>
+      <p>Test</p>
       {/* { viewer? <Viewer></Viewer> : captured ? <Captured setView={()=> setViewer(true) } >{counter}</Captured> :
        <div className='camera' >
           <video ref={videoRef}></video>
