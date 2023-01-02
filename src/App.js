@@ -74,6 +74,7 @@ function App() {
       <div className='container'>
         <Profile></Profile>
         <Login></Login>
+        <p>Herere</p>
         <ChangeColor></ChangeColor>
       </div>
   );
